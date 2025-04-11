@@ -1,73 +1,50 @@
+class SumThread extends Thread {
+    private int start;
+    private int end;
+    private long partialSum;
 
-class CatalogItem {
-    private String title;
-    private String author;
-    private int year;
-
-    public CatalogItem(String title, String author, int year) {
-        this.title = title;
-        this.author = author;
-        this.year = year;
+    public SumThread(int start, int end) {
+        this.start = start;
+        this.end = end;
+        this.partialSum = 0;
     }
 
-    public String getTitle() {
-        return title;
+    public void run() {
+        for (int i = start; i <= end; i++) {
+            partialSum += i;
+        }
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void displayDetails() {
-        System.out.println("Title: " + title);
-        System.out.println("Author: " + author);
-        System.out.println("Year: " + year);
-    }
-}
-
-class Book extends CatalogItem {
-    private String genre;
-
-    public Book(String title, String author, int year, String genre) {
-        super(title, author, year);
-        this.genre = genre;
-    }
-
-    @Override
-    public void displayDetails() {
-        super.displayDetails();
-        System.out.println("Genre: " + genre);
-    }
-}
-
-class DVD extends CatalogItem {
-    private int duration; 
-
-    public DVD(String title, String author, int year, int duration) {
-        super(title, author, year);
-        this.duration = duration;
-    }
-
-    @Override
-    public void displayDetails() {
-        super.displayDetails();
-        System.out.println("Duration: " + duration + " minutes");
+    public long getPartialSum() {
+        return partialSum;
     }
 }
 
 public class task05 {
     public static void main(String[] args) {
-        CatalogItem book = new Book("Effective Java", "Joshua Bloch", 2018, "Programming");
-        CatalogItem dvd = new DVD("Inception", "Christopher Nolan", 2010, 148);
+        int totalNumbers = 50000;
+        int numThreads = 5;
+        int rangePerThread = totalNumbers / numThreads;
 
-        System.out.println("=== Book Details ===");
-        book.displayDetails();
+        SumThread[] threads = new SumThread[numThreads];
 
-        System.out.println("\n=== DVD Details ===");
-        dvd.displayDetails();
+        for (int i = 0; i < numThreads; i++) {
+            int start = i * rangePerThread + 1;
+            int end = (i == numThreads - 1) ? totalNumbers : start + rangePerThread - 1;
+
+            threads[i] = new SumThread(start, end);
+            threads[i].start();
+        }
+        long totalSum = 0;
+        try {
+            for (int i = 0; i < numThreads; i++) {
+                threads[i].join();
+                totalSum += threads[i].getPartialSum();
+            }
+        } catch (InterruptedException e) {
+            System.out.println("Thread interrupted.");
+        }
+
+        System.out.println("Total Sum from 1 to 50000: " + totalSum);
     }
 }

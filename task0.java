@@ -39,7 +39,7 @@ class DivisorThread extends Thread {
         return maxDivisors;
     }
 }
-public class task07 {
+public class task0 {
     public static void main(String[] args) {
         int totalRange = 100000;
         int threadsCount = 10;

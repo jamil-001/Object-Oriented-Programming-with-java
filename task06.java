@@ -1,80 +1,39 @@
-
-class Product {
-    private String name;
-    private double price;
-    private int quantity;
-
-    public Product(String name, double price, int quantity) {
-        this.name = name;
-        this.price = price;
-        this.quantity = quantity;
-    }
-    public String getName() {
-        return name;
+class FirstThread extends Thread {
+    public void run() {
+        for (int i = 1; i <= 10; i++) {
+            System.out.println("FirstThread: " + i);
+        }
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-    public double calculateTotalCost() {
-        return price * quantity;
-    }
-
-    public void displayProductInfo() {
-        System.out.println("Product: " + name);
-        System.out.println("Price: $" + price);
-        System.out.println("Quantity: " + quantity);
+    public void printSecondPart() {
+        for (int i = 21; i <= 30; i++) {
+            System.out.println("FirstThread: " + i);
+        }
     }
 }
 
-class Electronics extends Product {
-    private int warrantyInMonths;
-
-    public Electronics(String name, double price, int quantity, int warrantyInMonths) {
-        super(name, price, quantity);
-        this.warrantyInMonths = warrantyInMonths;
-    }
-    public double calculateTotalCost() {
-        return super.calculateTotalCost() * 1.10;
-    }
-    public void displayProductInfo() {
-        super.displayProductInfo();
-        System.out.println("Warranty: " + warrantyInMonths + " months");
-        System.out.println("Total Cost (with electronics fee): $" + calculateTotalCost());
+class SecondThread extends Thread {
+    public void run() {
+        for (int i = 11; i <= 20; i++) {
+            System.out.println("SecondThread: " + i);
+        }
     }
 }
 
-class Clothing extends Product {
-    private String size;
-
-    public Clothing(String name, double price, int quantity, String size) {
-        super(name, price, quantity);
-        this.size = size;
-    }
-
-    public double calculateTotalCost() {
-        return super.calculateTotalCost();
-    }
-    public void displayProductInfo() {
-        super.displayProductInfo();
-        System.out.println("Size: " + size);
-        System.out.println("Total Cost: $" + calculateTotalCost());
-    }
-}
-// ShoppingCartTest
 public class task06 {
     public static void main(String[] args) {
-        Product laptop = new Electronics("Laptop", 1000.0, 1, 24);
-        Product tshirt = new Clothing("T-Shirt", 25.0, 3, "M");
+        FirstThread t1 = new FirstThread();
+        SecondThread t2 = new SecondThread();
 
-        System.out.println("=== Electronics ===");
-        laptop.displayProductInfo();
+        try {
+            t1.start();
+            t1.join();
+            t2.start();
+            t2.join();
+            t1.printSecondPart();
 
-        System.out.println("\n=== Clothing ===");
-        tshirt.displayProductInfo();
+        } catch (InterruptedException e) {
+            System.out.println("Thread interrupted.");
+        }
     }
 }
