@@ -1,50 +1,82 @@
-class Animal{
-     String name;
-     int age;
-     Animal(String name,int age){
-        this.name = name;
-        this.age = age;
+abstract class Account {
+    private String accountNumber;
+    protected double balance;
 
-     }
-    void sound(){
-        System.out.println("Animal make sound");
-     }
-     int factorial(int age){
-         return (age <= 1)? 1 : age * factorial(age-1); 
-     }
+    public Account(String accountNumber, double balance) {
+        this.accountNumber = accountNumber;
+        this.balance = balance;
+    }
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public abstract void deposit(double amount);
+    public abstract void withdraw(double amount);
+    public abstract void displayAccountInfo();
 }
-class Dog extends Animal{
-      Dog(String name,int age){
-        super(name, age);
-      }
-      void sound(){
-        System.out.println("the dog barks");
-      }
-      void display(){
-        System.out.println("Dog Name: "+ name + "\nAge: " + age);
-        sound();
-        System.out.println("The factorial of " + age +" is "+ (factorial(age)));
-      }
+class SavingsAccount extends Account {
+    private double interestRate = 0.03; 
+    public SavingsAccount(String accountNumber, double balance) {
+        super(accountNumber, balance);
+        // this.interestRate = interestRate;
+    }
+    public void deposit(double amount) {
+        balance += amount;
+        System.out.println("Deposited $" + amount + " to Savings Account.");
+    }
+
+    public void withdraw(double amount) {
+        if (amount <= balance) {
+            balance -= amount;
+            System.out.println("Withdrew $" + amount + " from Savings Account.");
+        } else {
+            System.out.println("Insufficient funds in Savings Account.");
+        }
+    }
+
+    public void displayAccountInfo() {
+        System.out.println("Savings Account Number: " + getAccountNumber());
+        System.out.println("Balance: $" + balance);
+    }
 }
-class Cat extends Animal{
-      Cat(String name,int age){
-        super(name, age);
-      }
-      void sound(){//method override
-        System.out.println("The cat meows");
-      }
-      void display(){
-        System.out.println("Cat Name "+ name +"\nAge: "+ age);
-        sound();
-        System.out.println("The factorial of "+ age +" is "+ (factorial(age)));
-      }
+
+class CheckingAccount extends Account {
+    private double overdraftLimit = 500.0;
+
+    public CheckingAccount(String accountNumber, double balance) {
+        super(accountNumber, balance);
+    }
+
+    public void deposit(double amount) {
+        balance += amount;
+        System.out.println("Deposited $" + amount + " to Checking Account.");
+    }
+    public void withdraw(double amount) {
+        if (amount <= balance + overdraftLimit) {
+            balance -= amount;
+            System.out.println("Withdrew $" + amount + " from Checking Account.");
+        } else {
+            System.out.println("Withdrawal exceeds overdraft limit.");
+        }
+    }
+    public void displayAccountInfo() {
+        System.out.println("Checking Account Number: " + getAccountNumber());
+        System.out.println("Balance: $" + balance);
+    }
 }
 public class task02 {
     public static void main(String[] args) {
-        Dog d = new Dog("Iron",7);
-        Cat c = new Cat("Tusk",5);
-        d.display();
+        Account savings = new SavingsAccount("SAV123", 1000);
+        Account checking = new CheckingAccount("CHK456", 500);
+
+        savings.deposit(200);
+        savings.withdraw(300);
+        savings.displayAccountInfo();
+
         System.out.println();
-        c.display();
+
+        checking.deposit(150);
+        checking.withdraw(800);
+        checking.displayAccountInfo();
     }
 }

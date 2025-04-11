@@ -1,56 +1,73 @@
-class Device{
-    String brand;
-    int totoalunit;
-    Device(String brand,int totoalunit){
-        this.brand = brand;
-        this.totoalunit = totoalunit; 
+
+class CatalogItem {
+    private String title;
+    private String author;
+    private int year;
+
+    public CatalogItem(String title, String author, int year) {
+        this.title = title;
+        this.author = author;
+        this.year = year;
     }
-    void display(){
-        System.out.println("Brand: "+ brand);
-        System.out.println("total unit: "+ totoalunit);
+
+    public String getTitle() {
+        return title;
     }
-    void sumofdigit(){
-        int sum = 0,num = totoalunit;
-        while(num > 0){
-            sum += num % 10;
-            num /=10;
-        }
-        System.out.println("The sum of "+ totoalunit + " is "+ sum + ".");
+
+    public String getAuthor() {
+        return author;
     }
-}
-class Phone extends Device{
-    String Operating;
-    Phone(String brand,int totoalunit,String Operating){
-        super(brand, totoalunit);
-        this.Operating = Operating;
+
+    public int getYear() {
+        return year;
     }
-    void display(){
-        System.out.println("Phone information: ");
-        super.display();
-        System.out.println("Operating System: "+ Operating);
+
+    public void displayDetails() {
+        System.out.println("Title: " + title);
+        System.out.println("Author: " + author);
+        System.out.println("Year: " + year);
     }
 }
-class Laptop extends Device{
-    String screensize;
-    Laptop(String brand,int totoalunit,String screensize){
-        super(brand,totoalunit);
-        this.screensize = screensize;
+
+class Book extends CatalogItem {
+    private String genre;
+
+    public Book(String title, String author, int year, String genre) {
+        super(title, author, year);
+        this.genre = genre;
     }
-    void display(){
-        System.out.println("Laptop information: ");
-        super.display();
-        System.out.println("Screen size: "+ screensize);
+
+    @Override
+    public void displayDetails() {
+        super.displayDetails();
+        System.out.println("Genre: " + genre);
     }
 }
+
+class DVD extends CatalogItem {
+    private int duration; 
+
+    public DVD(String title, String author, int year, int duration) {
+        super(title, author, year);
+        this.duration = duration;
+    }
+
+    @Override
+    public void displayDetails() {
+        super.displayDetails();
+        System.out.println("Duration: " + duration + " minutes");
+    }
+}
+
 public class task05 {
     public static void main(String[] args) {
-        Phone ph = new Phone("Apple",150,"ios");
-        Laptop lp = new Laptop("Dell", 125, "14.5 inches");
-        ph.display();
-        ph.sumofdigit();
-        System.out.println();
-        lp.display();
-        lp.sumofdigit();
+        CatalogItem book = new Book("Effective Java", "Joshua Bloch", 2018, "Programming");
+        CatalogItem dvd = new DVD("Inception", "Christopher Nolan", 2010, 148);
 
+        System.out.println("=== Book Details ===");
+        book.displayDetails();
+
+        System.out.println("\n=== DVD Details ===");
+        dvd.displayDetails();
     }
 }

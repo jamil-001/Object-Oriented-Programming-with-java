@@ -1,60 +1,67 @@
-class Account{
-     String name;
-     double balance,interest;
-     Account(){
-        System.out.println("Default");
-     }
-     Account(String name,double balance,double interest){
-        this.name = name;
-        this.balance = balance;
-        this.interest = interest;
-     }
-}
-class SavingsAccount extends Account{
-    SavingsAccount(){
-        super();
-        System.out.println("Default constructor");
-    }
-    SavingsAccount(String name,double balance,double interest){
-        super(name,balance,interest);
-    }
-    double addInterest(){
-        System.out.println("Interest added to account " + name);
-        balance += balance * interest;
-        return balance;
-    }
-    void displayBalance(){
-        System.out.println("Account " + name + " balance: " + balance);
-    }
-    
 
+abstract class Movie {
+    private String title;
+    private String director;
+    private int releaseYear;
+
+    public Movie(String title, String director, int releaseYear) {
+        this.title = title;
+        this.director = director;
+        this.releaseYear = releaseYear;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDirector() {
+        return director;
+    }
+
+    public int getReleaseYear() {
+        return releaseYear;
+    }
+
+    public abstract void displayMovieInfo();
 }
-class CheckingAccount extends Account{
-    CheckingAccount(){
-        super();
-        System.out.println("Default Constructor");
+
+class ActionMovie extends Movie {
+    public ActionMovie(String title, String director, int releaseYear) {
+        super(title, director, releaseYear);
     }
-    CheckingAccount(String name,double balance,double interest){
-        super(name, balance, interest);
-    }
-    double withdraw(double money){
-        System.out.println("withdrew "+ balance + "from checking accoutn "+ name);
-        balance -= money;
-        return balance;
-    }
-    void displayBalance(){
-        System.out.println("Account" + name + " balance " + balance);
+
+    @Override
+    public void displayMovieInfo() {
+        System.out.println("Genre: Action");
+        System.out.println("Title: " + getTitle());
+        System.out.println("Director: " + getDirector());
+        System.out.println("Release Year: " + getReleaseYear());
     }
 }
+
+class ComedyMovie extends Movie {
+    public ComedyMovie(String title, String director, int releaseYear) {
+        super(title, director, releaseYear);
+    }
+
+    @Override
+    public void displayMovieInfo() {
+        System.out.println("Genre: Comedy");
+        System.out.println("Title: " + getTitle());
+        System.out.println("Director: " + getDirector());
+        System.out.println("Release Year: " + getReleaseYear());
+    }
+}
+
 public class task10 {
     public static void main(String[] args) {
-        SavingsAccount savingsAccount = new SavingsAccount("SA001",1000.0, 0.05);
-        CheckingAccount checkingAccount = new CheckingAccount("CA001",500.0, 200.0);
-        savingsAccount.displayBalance();
-        savingsAccount.addInterest();
-        savingsAccount.displayBalance();
-        checkingAccount.displayBalance();
-        checkingAccount.withdraw(700.0);
-        checkingAccount.displayBalance();
+        Movie movie1 = new ActionMovie("Mission Impossible", "Christopher McQuarrie", 2023);
+        Movie movie2 = new ComedyMovie("The Mask", "Chuck Russell", 1994);
+
+        System.out.println("=== Movie 1 ===");
+        movie1.displayMovieInfo();
+
+        System.out.println("\n=== Movie 2 ===");
+        movie2.displayMovieInfo();
     }
 }

@@ -1,60 +1,69 @@
 
+abstract class Vehicle {
+    private String make;
+    private String model;
+    private double rentalRate;
 
-class Employee{
-      String name;
-      int employeeid;
-      double salary;
-      Employee(String name,int employeeid,double salary){
-        this.name = name;
-        this.employeeid = employeeid;
-        this.salary = salary;
-      }
-       int countVowels(){
-        int count = 0;
-        for(char c : name.toLowerCase().toCharArray()){
-            if("aeiou".indexOf(c) != -1){
-                count++;
-            } 
-        }
-        return count;
-      }
-    
-}
-class Manager extends Employee{
-    String department;
-      Manager(String name,int employeeid,double salary,String department){
-        super(name, employeeid, salary);
-        this.department = department;
-      }
-      void display(){
-        System.out.println("Manager information:");
-        System.out.println("Name: " + name + " and it contains " + countVowels()+" vowels.");
-        System.out.println("Employee ID: "+ employeeid);
-        System.out.println("Salary: $" + salary);
-        System.out.println("Department: " + department);
-      }
-}
-class Developer extends Employee {
-    String language;
-
-    Developer(String name, int employeeid, double salary, String language) {
-        super(name, employeeid, salary);
-        this.language = language;
+    public Vehicle(String make, String model, double rentalRate) {
+        this.make = make;
+        this.model = model;
+        this.rentalRate = rentalRate;
+    }
+    public String getMake() {
+        return make;
     }
 
-    void display() {
-        System.out.println("Developer Information:");
-        System.out.println("Name: " + name + " and It contains " + countVowels() + " vowels.");
-        System.out.println("Employee ID: "+ employeeid);
-        System.out.println("Salary: $" + salary);
-        System.out.println("Programming Language: " + language);
+    public String getModel() {
+        return model;
+    }
+
+    public double getRentalRate() {
+        return rentalRate;
+    }
+    public abstract double calculateRentalCost(int days);
+
+    public abstract void displayVehicleInfo();
+}
+
+class Car extends Vehicle {
+    public Car(String make, String model, double rentalRate) {
+        super(make, model, rentalRate);
+    }
+
+    public double calculateRentalCost(int days) {
+        return days * getRentalRate();
+    }
+    public void displayVehicleInfo() {
+        System.out.println("Car: " + getMake() + " " + getModel() + " | Rate: $" + getRentalRate() + " per day");
+    }
+}
+class Bike extends Vehicle {
+    public Bike(String make, String model, double rentalRate) {
+        super(make, model, rentalRate);
+    }
+    public double calculateRentalCost(int days) {
+        double cost = days * getRentalRate();
+        if (days > 5) {
+            cost *= 0.9;
+        }
+        return cost;
+    }
+
+    @Override
+    public void displayVehicleInfo() {
+        System.out.println("Bike: " + getMake() + " " + getModel() + " | Rate: $" + getRentalRate() + " per day");
     }
 }
 public class task04 {
     public static void main(String[] args) {
-        Manager m = new Manager("sasuke", 101, 80000.0,"HR");
-        Developer d = new Developer("Naruto", 201, 70000.0,"java");
-        m.display();
-        d.display();
+        Vehicle car = new Car("Toyota", "Camry", 50.0);
+        Vehicle bike = new Bike("Yamaha", "MT-15", 20.0);
+
+        car.displayVehicleInfo();
+        System.out.println("Rental cost for 3 days: $" + car.calculateRentalCost(3));
+        System.out.println();
+
+        bike.displayVehicleInfo();
+        System.out.println("Rental cost for 7 days: $" + bike.calculateRentalCost(7));
     }
 }

@@ -1,57 +1,72 @@
-class Vehicle{
-    String makeBy;
-    int makingYear;
-    Vehicle(String makeBy,int makingYear){
-        this.makeBy=makeBy;
-        this.makingYear=makingYear;
+abstract class Shape {
+    private double area;
+    private String color;
+
+    public Shape(String color) {
+        this.color = color;
     }
-    void display(){
-        System.out.println("Make: "+makeBy+"\nYear: "+makingYear);
+    protected void setArea(double area) {
+        this.area = area;
     }
-    boolean isPalindrome(){
-        int year=makingYear, reverse=0;
-        while(year>0){
-            reverse=reverse*10+year%10;
-            year/=10;
-        }
-        return reverse==makingYear;
+
+    public double getArea() {
+        return area;
     }
-    
-    
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+    public abstract void calculateArea();
+
+    public abstract void displayInfo();
 }
-class Car extends Vehicle{
-    int doors;
-    Car(String makeBy,int makingYear,int doors){
-        super(makeBy,makingYear);
-        this.doors=doors;
+
+class Circle extends Shape {
+    private double radius;
+
+    public Circle(double radius, String color) {
+        super(color);
+        this.radius = radius;
     }
-    void display(){
-        System.out.println("Car information:");
-        super.display();
-        System.out.println("Number of doors: "+doors);
-        System.out.println("This Car manufacturing year is "+(isPalindrome()?"":"not")+" a palindrom");
+    public void calculateArea() {
+        double area = Math.PI * radius * radius;
+        setArea(area);
+    }
+    public void displayInfo() {
+        System.out.println("Circle Color: " + getColor());
+        System.out.println("Circle Area: " + getArea());
     }
 }
-class Motorcycle extends Vehicle{
-    boolean sidecar;
-    Motorcycle(String makeBy,int makingYear,boolean sidecar){
-        super(makeBy,makingYear);
-        this.sidecar=sidecar;
+class Rectangle extends Shape {
+    private double length;
+    private double width;
+
+    public Rectangle(double length, double width, String color) {
+        super(color);
+        this.length = length;
+        this.width = width;
     }
-    void display(){
-        System.out.println("Motorcycle information:");
-        super.display();
-        System.out.println("Has sidecar: "+sidecar);
-        System.out.println("This Motorcycle manufacturing year is "+(isPalindrome()?"":"not")+" a palindrom");
+    public void calculateArea() {
+        double area = length * width;
+        setArea(area);
+    }
+    public void displayInfo() {
+        System.out.println("Rectangle Color: " + getColor());
+        System.out.println("Rectangle Area: " + getArea());
     }
 }
 
 public class task01 {
     public static void main(String[] args) {
-        Car c= new Car("Toyota",2002,4);
-        Motorcycle m=new Motorcycle("Ducati",2003,true);
-        c.display();
+        Shape circle = new Circle(5.0, "Red");
+        circle.calculateArea();
+        circle.displayInfo();
         System.out.println();
-        m.display();
+        Shape rectangle = new Rectangle(4.0, 6.0, "Blue");
+        rectangle.calculateArea();
+        rectangle.displayInfo();
     }
 }
