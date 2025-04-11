@@ -1,38 +1,60 @@
-class BankAccount{
-      int Accoutnumber;
-      double balance;
-      //account + balance
-      BankAccount(int Accoutnumber,double balance){
-        this.Accoutnumber = Accoutnumber;
+class Account{
+     String name;
+     double balance,interest;
+     Account(){
+        System.out.println("Default");
+     }
+     Account(String name,double balance,double interest){
+        this.name = name;
         this.balance = balance;
-      }
-      //just account number
-      BankAccount(int Accoutnumber){
-        this.Accoutnumber = Accoutnumber;
-        this.balance = 0.0;
-      }
-      
-      //default
-      BankAccount(){
-        this.Accoutnumber = 0;
-        this.balance = 0.0;
-      }
+        this.interest = interest;
+     }
+}
+class SavingsAccount extends Account{
+    SavingsAccount(){
+        super();
+        System.out.println("Default constructor");
+    }
+    SavingsAccount(String name,double balance,double interest){
+        super(name,balance,interest);
+    }
+    double addInterest(){
+        System.out.println("Interest added to account " + name);
+        balance += balance * interest;
+        return balance;
+    }
+    void displayBalance(){
+        System.out.println("Account " + name + " balance: " + balance);
+    }
+    
 
-      void display(){
-        System.out.println("Account Number: " + Accoutnumber);
-        System.out.println("Blance: $" + balance);
-      }
+}
+class CheckingAccount extends Account{
+    CheckingAccount(){
+        super();
+        System.out.println("Default Constructor");
+    }
+    CheckingAccount(String name,double balance,double interest){
+        super(name, balance, interest);
+    }
+    double withdraw(double money){
+        System.out.println("withdrew "+ balance + "from checking accoutn "+ name);
+        balance -= money;
+        return balance;
+    }
+    void displayBalance(){
+        System.out.println("Account" + name + " balance " + balance);
+    }
 }
 public class task10 {
-
     public static void main(String[] args) {
-        BankAccount obj1 = new BankAccount(231115140,2000.0);
-        BankAccount obj2 = new BankAccount(231115140);
-        BankAccount obj4 = new BankAccount();
-        obj1.display();
-        System.out.println();
-        obj2.display();
-        System.out.println();
-        obj4.display();
+        SavingsAccount savingsAccount = new SavingsAccount("SA001",1000.0, 0.05);
+        CheckingAccount checkingAccount = new CheckingAccount("CA001",500.0, 200.0);
+        savingsAccount.displayBalance();
+        savingsAccount.addInterest();
+        savingsAccount.displayBalance();
+        checkingAccount.displayBalance();
+        checkingAccount.withdraw(700.0);
+        checkingAccount.displayBalance();
     }
 }
